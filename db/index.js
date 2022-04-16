@@ -1,16 +1,36 @@
-const mongoose = require('mongoose')
-//Cha = mongoose.model('Channel')
-const connectBD = async () => {
-    try{
-        const conn = await mongoose.connect('mongodb://127.0.0.1:27017',{
-            useNewUrlParser: true, 
-            useUnifiedTopology: true,            
-        })
+const express = require('express')
+const routes = require('./routerYoutube');
+const connectBD = require('./db')
+const dotenv = require('dotenv')
 
-        console.log(`connected ${conn.connection.host}`)
-    }catch(error){
-        console.log(error);
-        process.exit(1);
-    }
-}
-module.exports = connectBD
+//load Config
+dotenv.config({ path: 'config.env' })
+
+connectBD()
+
+const app = express()
+app.use(express.json())
+app.use('/api', routes)
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+    console.log(`funcionando en el puerto: ${PORT}`)
+})
+/* const uri = process.env.URL_MONGO
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+}); */
+
+
+
+/* const mongoString = process.env.URL_MONGO
+console.log(mongoString)
+mongoose.connect(mongoString)
+const database = mongoose.connection;
+database.on('error', err => console.error)
+database.once('connected', () => {console.log("Database Connected")
+}) */
+
