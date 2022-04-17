@@ -1,24 +1,22 @@
 const { chromium } = require('playwright')
 const links = require('./modules/getData')
+const axios = require('axios')
 
-
-/* async function validar() {
-    const getLinks = await links('https://www.youtube.com/channel/UCD7KsdWNWiI5GEp9TFhqGPw/');
+async function validar() {
+    const getLinks = await links('https://www.youtube.com/c/CorazonSerranoTV/videos');
     console.log(getLinks)
 
-    await Promise.all(
-        getLinks.map(async (data)=>{
-            return await descargar(data)
-        })
-    )       
-} */
+    getLinks.map((data,index)=>{
+        setTimeout(()=>{
+             descargar(data)
+        },60000*index)    
+    })
+}
 
-const array = ["/watch?v=kWMln0qTbHo","/watch?v=_iZVveFQJR8"]
-array.map(async (data)=>{
-    await descargar(data)
-})
 
-async function descargar(link){
+
+
+async function descargar(link){try{
     console.log(link)
     const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage({
@@ -27,8 +25,11 @@ async function descargar(link){
     })
     await page.goto('https://yoump3.app/es4')
     await page.locator('input[type="url"]').fill("https://youtube.com" + link)
+    await page.waitForTimeout(3000)
     await page.locator('input[type="submit"]').click()
-    await page.locator('[class="button accept"]').click()    
+    await page.waitForTimeout(3000)
+    await page.locator('[class="button accept"]').click()  
+    await page.waitForTimeout(3000)  
 
     /*  const re = await page.click('[class="button button-download"]')
      console.log(re)
@@ -40,11 +41,18 @@ async function descargar(link){
     console.log(download._url)
     console.log(download._suggestedFilename)
     await download.saveAs(`E:\\${download._suggestedFilename}`)
+  /*   await axios.post('http://localhost:5000/api/post',{
+        code:link,
+        name:download._suggestedFilename
+    }) */
     page.close()
+}catch(e) {
+    console.log(e)
+}
 }
 
 //descargar()
-//validar()
+validar()
 
 
 async function abrirPagina() {

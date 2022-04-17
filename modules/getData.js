@@ -7,7 +7,7 @@ async function getDataYoutube(canal) {
         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',
         timeout: 0
     })
-    await page.goto(`${canal}`)
+    await page.goto(`${canal}/videos`)
     page.waitForSelector('ytd-grid-video-renderer')
     //const rows = page.locator('ytd-grid-video-renderer')
     const rows = page.locator('ytd-grid-video-renderer>div>ytd-thumbnail>a')
