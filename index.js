@@ -7,10 +7,10 @@ const uri = "mongodb://127.0.0.1:27017"
 const client = new MongoClient(uri)
 
 async function validar() {
-    try{
-        const getLinks = await links('https://www.youtube.com/c/CorazonSerranoTV/videos');
+    try {
+        const getLinks = await links('https://www.youtube.com/c/StudioJeanCarlosHD4K');
         console.log(getLinks)
-    
+
         await client.connect()
         const database = client.db("youtube")
         const datos = database.collection("datos")
@@ -24,17 +24,17 @@ async function validar() {
                 }
             })
         )
-    
+        console.log(arr.length)
         arr.map((link, index) => {
             setTimeout(() => {
                 descargar(link)
             }, 60000 * index)
-        })   
+        })
 
-    }catch(e){
+    } catch (e) {
         console.log(e)
     }
-   
+
 
 
     /* getLinks.map(async (link, index) => {
