@@ -3,6 +3,13 @@ const Model = require('./youtubeModel')
 
 const router = express.Router();
 
+router.post('/descargar', async (req,res)=>{
+   const data = new Model({
+       code:req.body.code, 
+       name:req.body.name
+   })
+})
+
 router.post('/post', async (req, res) => {
 
     console.log(req.body)

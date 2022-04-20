@@ -1,24 +1,19 @@
 const { chromium } = require('playwright')
 const links = require('./modules/getData')
-const axios = require('axios')
-const { MongoClient } = require('mongodb')
+const consulta = require('./modules/client')
 
-const uri = "mongodb://127.0.0.1:27017"
-const client = new MongoClient(uri)
+const descargarPlaywright = require('./modules/descargar')
+
 
 async function validar() {
     try {
         const getLinks = await links('https://www.youtube.com/c/StudioJeanCarlosHD4K');
-        console.log(getLinks)
-
-        await client.connect()
-        const database = client.db("youtube")
-        const datos = database.collection("datos")
+        console.log(getLinks)       
         const arr = []
         await Promise.all(
             getLinks.map(async link => {
                 const query = { "code": `${link}` }
-                const dato = await datos.findOne(query)
+                const dato = await consulta(query)
                 if (dato == null) {
                     arr.push(link)
                 }
@@ -26,17 +21,17 @@ async function validar() {
         )
         console.log(arr.length)
         arr.map((link, index) => {
-            setTimeout(() => {
-                descargar(link)
+            setTimeout(async () => {
+                await descargarPlaywright(link)
             }, 60000 * index)
         })
 
     } catch (e) {
         console.log(e)
     }
-
-
-
+}
+  
+validar()
     /* getLinks.map(async (link, index) => {
         setTimeout(async () => {
             await client.connect()
@@ -60,10 +55,10 @@ async function validar() {
              //descargar(data)
          }, 60000 * index)
      }) */
-}
 
 
-async function descargar(link) {
+
+/* async function descargar(link) {
     try {
         console.log(link)
         const browser = await chromium.launch({ headless: false });
@@ -79,9 +74,9 @@ async function descargar(link) {
         await page.locator('[class="button accept"]').click()
         await page.waitForTimeout(3000)
 
-        /*  const re = await page.click('[class="button button-download"]')
-         console.log(re)
-         console.log('encontrado') */
+        // const re = await page.click('[class="button button-download"]')
+         // console.log(re)
+        // console.log('encontrado')
         const [download] = await Promise.all([
             page.waitForEvent('download'),
             page.click('[class="button button-download"]')
@@ -97,10 +92,10 @@ async function descargar(link) {
     } catch (e) {
         console.log(e)
     }
-}
+} */
 
 //descargar()
-validar()
+
 
 
 async function abrirPagina() {
