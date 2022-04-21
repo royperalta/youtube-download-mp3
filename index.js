@@ -1,13 +1,12 @@
-const { chromium } = require('playwright')
 const links = require('./modules/getData')
 const consulta = require('./modules/client')
-
 const descargarPlaywright = require('./modules/descargar')
 
 
-async function validar() {
+async function procesarAudio(canalYoutube) {
+    console.log(canalYoutube)
     try {
-        const getLinks = await links('https://www.youtube.com/c/StudioJeanCarlosHD4K');
+        const getLinks = await links(canalYoutube);
         console.log(getLinks)       
         const arr = []
         await Promise.all(
@@ -31,7 +30,9 @@ async function validar() {
     }
 }
   
-validar()
+//procesarAudio('https://www.youtube.com/c/StudioJeanCarlosHD4K')
+
+module.exports = procesarAudio
     /* getLinks.map(async (link, index) => {
         setTimeout(async () => {
             await client.connect()
@@ -98,7 +99,7 @@ validar()
 
 
 
-async function abrirPagina() {
+/* async function abrirPagina() {
 
     const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage({
@@ -120,9 +121,9 @@ async function abrirPagina() {
     await page.locator('input[type="submit"]').click()
     await page.locator('[class="button accept"]').click()
 
-    /*  const re = await page.click('[class="button button-download"]')
-     console.log(re)
-     console.log('encontrado') */
+     //const re = await page.click('[class="button button-download"]')
+    // console.log(re)
+     //console.log('encontrado')
     const [download] = await Promise.all([
         page.waitForEvent('download'),
         page.click('[class="button button-download"]')
@@ -133,6 +134,6 @@ async function abrirPagina() {
 
 
     await page.close()
-    /*
-    await page.locator('[class="button button-download"]').click() */
-}
+    
+    //await page.locator('[class="button button-download"]').click()
+} */

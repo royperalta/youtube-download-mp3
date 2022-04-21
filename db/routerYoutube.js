@@ -1,13 +1,14 @@
 const express = require('express');
 const Model = require('./youtubeModel')
-
+const procesarAudio = require('../index')
 const router = express.Router();
 
-router.post('/descargar', async (req,res)=>{
-   const data = new Model({
-       code:req.body.code, 
-       name:req.body.name
-   })
+router.get('/descargar', async (req, res) => {
+    const canal = JSON.stringify(req.query.canal)
+    console.log(canal)
+    //console.log(req.query.canal)
+    res.json(canal)
+    await procesarAudio(req.query.canal.toString())
 })
 
 router.post('/post', async (req, res) => {
@@ -15,7 +16,7 @@ router.post('/post', async (req, res) => {
     console.log(req.body)
     const data = new Model({
         code: req.body.code,
-        name: req.body.name,        
+        name: req.body.name,
     })
 
     try {
@@ -38,30 +39,30 @@ router.get('/getOne/:id', async (req, res) => {
     try {
         const data = await Model.findById(req.params.id)
         res.status(200).json(data)
-    }catch(error){
-        res.status(500).json({message:error.message})
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 })
 
-router.patch('/patch/:id',async (req, res) => {
-    try{
+router.patch('/patch/:id', async (req, res) => {
+    try {
         const id = req.params.id
         const body = req.body
-        const config = {new:true}
+        const config = { new: true }
 
-        const dataUpdated = await Model.findByIdAndUpdate(id,body,config)
+        const dataUpdated = await Model.findByIdAndUpdate(id, body, config)
         res.status(200).json(dataUpdated)
-    }catch(error){
-        res.status(500).json({message:error.message})
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 })
 
 router.delete('/delete/:id', async (req, res) => {
-    try{
+    try {
         const data = await Model.findByIdAndDelete(req.params.id)
         res.send(`La información de ${data.name} fué borrado`)
-    }catch(error){
-        res.status(500).json({message: error.message})
+    } catch (error) {
+        res.status(500).json({ message: error.message })
     }
 })
 
