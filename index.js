@@ -1,10 +1,10 @@
-const links = require('./modules/getData')
+const links = require('./modules/getData2')
 const consulta = require('./modules/client')
 const descargarPlaywright = require('./modules/descargar')
 
 
 async function procesarAudio(canalYoutube) {
-    console.log(canalYoutube)
+   
     try {
         const getLinks = await links(canalYoutube);
         console.log(getLinks)       

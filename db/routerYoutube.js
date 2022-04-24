@@ -4,11 +4,14 @@ const procesarAudio = require('../index')
 const router = express.Router();
 
 router.get('/descargar', async (req, res) => {
-    const canal = JSON.stringify(req.query.canal)
-    console.log(canal)
-    //console.log(req.query.canal)
-    res.json(canal)
-    await procesarAudio(req.query.canal.toString())
+    try {
+        const canal = JSON.stringify(req.query.canal)       
+        res.json(canal)
+        await procesarAudio(req.query.canal.toString())
+    }
+    catch (e) {
+        console.log(e)
+    }
 })
 
 router.post('/post', async (req, res) => {
