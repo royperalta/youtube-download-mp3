@@ -5,11 +5,21 @@ const router = express.Router();
 
 router.get('/descargar', async (req, res) => {
     try {
-        const canal = JSON.stringify(req.query.canal)       
+        const canal = JSON.stringify(req.query.canal)
         res.json(canal)
         await procesarAudio(req.query.canal.toString())
     }
     catch (e) {
+        console.log(e)
+    }
+})
+router.post('/descargar', async (req, res) => {
+    try {
+        const canal= req.body.canal.toString()
+        res.send("descargando")
+        const response = await procesarAudio(canal)
+       
+    } catch (e) {
         console.log(e)
     }
 })
