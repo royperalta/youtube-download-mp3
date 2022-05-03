@@ -1,6 +1,7 @@
 const express = require('express');
 const Model = require('./youtubeModel')
 const procesarAudio = require('../index')
+const masvisto = require('../masvisto')
 const router = express.Router();
 
 router.get('/descargar', async (req, res) => {
@@ -16,8 +17,19 @@ router.get('/descargar', async (req, res) => {
 router.post('/descargar', async (req, res) => {
     try {
         const canal= req.body.canal.toString()
-        res.send("descargando")
-        const response = await procesarAudio(canal)
+        res.send("descargando")      
+        await procesarAudio(canal)
+       
+    } catch (e) {
+        console.log(e)
+    }
+})
+router.post('/masvisto', async (req, res) => {
+    try {
+        const canal= req.body.canal.toString()
+        console.log(canal)
+        res.send("descargando")      
+        await masvisto(canal)
        
     } catch (e) {
         console.log(e)

@@ -29,6 +29,33 @@ async function procesarAudio(canalYoutube) {
         console.log(e)
     }
 }
+
+async function procesarAudioMasVisto(canalYoutube) {
+   
+    try {
+        const getLinks = await links(canalYoutube);
+        console.log(getLinks)       
+        const arr = []
+        await Promise.all(
+            getLinks.map(async link => {
+                const query = { "code": `${link}` }
+                const dato = await consulta(query)
+                if (dato == null) {
+                    arr.push(link)
+                }
+            })
+        )
+        console.log(arr.length)
+        arr.map((link, index) => {
+            setTimeout(async () => {
+                await descargarPlaywright(link)
+            }, 60000 * index)
+        })
+
+    } catch (e) {
+        console.log(e)
+    }
+}
   
 //procesarAudio('https://www.youtube.com/c/StudioJeanCarlosHD4K')
 

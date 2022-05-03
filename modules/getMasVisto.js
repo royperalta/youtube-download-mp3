@@ -1,13 +1,14 @@
 const { chromium } = require('playwright')
 
-async function getDataYoutube(canal) {
+async function getDataMasVisto(canal) {
     try {
         const browser = await chromium.launch({ headless: true });
         const page = await browser.newPage({
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',
             timeout: 0
         })
-        await page.goto(`${canal}/videos`)
+        console.log(canal)
+        await page.goto(`${canal}/videos?view=0&sort=p&flow=grid`)
         await page.evaluate(() => {
             window.scrollTo(0, 2000)
         })
@@ -34,4 +35,4 @@ async function getDataYoutube(canal) {
     }
 }
 
-module.exports = getDataYoutube;
+module.exports = getDataMasVisto;
