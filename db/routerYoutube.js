@@ -2,6 +2,8 @@ const express = require('express');
 const Model = require('./youtubeModel')
 const procesarAudio = require('../index')
 const masvisto = require('../masvisto')
+const playlist = require('../playList')
+const mix= require('../mix')
 const router = express.Router();
 
 router.get('/descargar', async (req, res) => {
@@ -24,12 +26,34 @@ router.post('/descargar', async (req, res) => {
         console.log(e)
     }
 })
+router.post('/descargarmix', async (req, res) => {
+    try {
+        const canal= req.body.canal.toString()
+        res.send("descargando")      
+        await mix(canal)
+       
+    } catch (e) {
+        console.log(e)
+    }
+})
 router.post('/masvisto', async (req, res) => {
     try {
         const canal= req.body.canal.toString()
         console.log(canal)
         res.send("descargando")      
         await masvisto(canal)
+       
+    } catch (e) {
+        console.log(e)
+    }
+})
+
+router.post('/playlist', async (req, res) => {
+    try {
+        const canal= req.body.canal.toString()
+        console.log(canal)
+        res.send("descargando")      
+        await playlist(canal)
        
     } catch (e) {
         console.log(e)

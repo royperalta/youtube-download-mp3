@@ -1,14 +1,14 @@
 const { chromium } = require('playwright')
 
-async function getDataMasVisto(canal) {
+async function getDataYoutube(canal) {
+    console.log(canal)
     try {
         const browser = await chromium.launch({ headless: false });
         const page = await browser.newPage({
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',
             timeout: 0
         })
-        console.log(canal)
-        await page.goto(`${canal}/videos?view=0&sort=p&flow=grid`)
+        await page.goto(`${canal}`)
         await page.evaluate(() => {
             window.scrollTo(0, 2000)
         })
@@ -21,13 +21,12 @@ async function getDataMasVisto(canal) {
             window.scrollTo(0, 5000)
         })
         await page.waitForTimeout(2000)
-        page.waitForSelector('ytd-grid-video-renderer')
+        page.waitForSelector('a[class="yt-simple-endpoint style-scope ytd-playlist-video-renderer"]')
         //const rows = page.locator('ytd-grid-video-renderer')
-        const rows = page.locator('ytd-grid-video-renderer>div>ytd-thumbnail>a')
+        const rows = page.locator('a[class="yt-simple-endpoint style-scope ytd-playlist-video-renderer"]')
         const count = await rows.count()
-
         console.log(count)
-        await page.waitForSelector('ytd-grid-video-renderer>div>ytd-thumbnail>a')
+        await page.waitForSelector('a[class="yt-simple-endpoint style-scope ytd-playlist-video-renderer"]')
         return await rows.evaluateAll(list => list.map(element => element.getAttribute('href')));
     }
     catch (e) {
@@ -35,4 +34,4 @@ async function getDataMasVisto(canal) {
     }
 }
 
-module.exports = getDataMasVisto;
+module.exports = getDataYoutube;

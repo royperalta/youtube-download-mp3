@@ -6,6 +6,16 @@ function App() {
 
   const [url, setUrl] = useState("")
   const [urlMore, setUrlMore] = useState("");
+  const [urlPlaylist, setUrlPlayList] = useState("");
+  const [urlMix, setMix] = useState("");
+
+  const saveUrlPlaylist = (event) => {
+    setUrlPlayList(event.target.value)
+  }
+
+  const saveUrlMix = (event) => {
+    setMix(event.target.value)
+  }
 
   const guardarDato = (event) => {
     setUrl(event.target.value)
@@ -15,6 +25,13 @@ function App() {
     console.log(event.target.value)
   }
 
+const descargarPlayList = () => {
+  console.log(urlPlaylist)
+  axios.post('http://localhost:5000/api/playlist/', {
+    "canal": `${urlPlaylist}`
+  })
+}
+
   const descargarMoreViews = (event) => {
     console.log(urlMore)
     axios.post('http://localhost:5000/api/masvisto/', {
@@ -23,9 +40,14 @@ function App() {
   }
 
   const descargar = (event) => {
-
     axios.post('http://localhost:5000/api/descargar/', {
       "canal": `${url}`
+    })
+  }
+
+  const descargarMix = (event) => {
+    axios.post('http://localhost:5000/api/descargarmix/', {
+      "canal": `${urlMix}`
     })
   }
 
@@ -48,6 +70,23 @@ function App() {
           onChange={saveUrl}
         ></input>
         <button onClick={descargarMoreViews}>DESCARGAR</button>
+
+        <br></br>
+        <label>Descargar playlist</label>
+        <input
+          type="text"
+          value={urlPlaylist}
+          onChange={saveUrlPlaylist}
+        ></input>
+        <button onClick={descargarPlayList}>DESCARGAR</button>
+
+        <label>Descargar Mix</label>
+        <input
+          type="text"
+          value={urlMix}
+          onChange={saveUrlMix}
+        ></input>
+        <button onClick={descargarMix}>DESCARGAR</button>
       </header>
     </div>
   );
